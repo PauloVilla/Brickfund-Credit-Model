@@ -115,6 +115,11 @@ pago_mensual = (monto_solicitado * tasa_mensual * (1 + tasa_mensual)**plazo_mese
 
 interes, capital = calcular_interes_y_capital(saldo_inicial=monto_solicitado, tasa_mensual=tasa_mensual, pago_mensual=pago_mensual)
 
+if pago_mensual>capacidad_pago:
+    st.session_state["Pasa Requerimientos"] = 0
+    st.session_state["Mensaje"] = f"Capacidad de pago insuficiente: El pago mensual estimado ${pago_mensual:,.2f} excede el ingreso disponible ${capacidad_pago:,.2f}"
+else:
+    st.session_state["Pasa Requerimientos"] = 1
 
 if monto_solicitado < 10_000_000 or monto_solicitado>100_000_000:
     st.session_state["Pasa Requerimientos"] = 0
@@ -188,7 +193,7 @@ if st.session_state["Mostrar info"] == 1 and st.session_state["Pasa Requerimient
        
         """, unsafe_allow_html=True)
         izq_logo, logo = der.columns(2)
-        logo.image(image=image, use_column_width=True, caption="Brickfund")
+        logo.image(image=image, use_container_width=True, caption="Brickfund")
 
 
     with st.container(border=False):
